@@ -2,7 +2,8 @@ namespace BlazorApp.Data;
 
 public class Quote
 {
-    public string TheQuote {get;set;}
+    public string quote {get;set;}
+    public string author {get;set;}
 
     
 

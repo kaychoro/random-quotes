@@ -1,9 +1,46 @@
 ﻿@page "/"
+@using System.Net
+@using System.Text.Json
+@using BlazorApp.Data
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>QUOTES!</h1>
 
-Welcome to your new app.
+Your Quote: @myQuote<br/>
+- @myAuthor
+<br/>
+<br/>
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    private Quotes? Quotes;
+    private string json;
+    int index = 0;
+    int size = 0;
+    string myQuote = "";
+    string myAuthor = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        using (WebClient wc = new WebClient())
+        {
+            json = wc.DownloadString("https://gist.githubusercontent.com/nasrulhazim/54b659e43b1035215cd0ba1d4577ee80/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json");
+            Quotes = JsonSerializer.Deserialize<Quotes>(json);
+        }
+        size = Quotes.quotes.Count;
+        index = new Random().Next(size);
+        myAuthor = Quotes.quotes[index].author;
+        myQuote = Quotes.quotes[index++].quote;
+        index %= size;
+
+    // forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+    }
+
+    private void IncrementCount() {
+        myAuthor = Quotes.quotes[index].author;
+        myQuote = Quotes.quotes[index++].quote;
+        index %= size;
+    }
+
+}
