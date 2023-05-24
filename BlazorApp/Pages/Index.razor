@@ -7,3 +7,18 @@
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+<button class="btn btn-primary" @onclick="QuoteUpdate">Quote</button>
+<p role="status">@quote</p>
+
+@code {
+    private List<Quotes> quotes;
+    private string quote = 0;
+
+
+    private void QuoteUpdate()
+    {
+        int randomQuoteNumber = random(quotes.Count());
+        
+    }
+}((uint)
